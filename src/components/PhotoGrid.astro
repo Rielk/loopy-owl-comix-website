@@ -23,7 +23,7 @@ const { images } = Astro.props;
 			>
 				<Image
 					src={image.src}
-					quality={90}
+					quality={'max'}
 					format="webp"
 					width={image.src.width}
 					height={image.src.height}
