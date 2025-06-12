@@ -8,9 +8,9 @@ export interface SocialLink {
 }
 
 export default {
-	title: 'SR',
+	title: 'LoopyOwl',
 	favicon: 'favicon.ico',
-	owner: 'Sara Richard',
+	owner: 'Loopy Owl Comix',
 	profileImage: 'profile.jpg',
 	socialLinks: [
 		{
