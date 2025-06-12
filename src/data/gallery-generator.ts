@@ -3,15 +3,17 @@ import * as fs from 'node:fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import fg from 'fast-glob';
-import { type GalleryData, loadGallery, NullGalleryData } from './galleryData.ts';
+import { createNullMeta, type GalleryData, type GalleryImage, type GalleryMetaData, loadMetaData, NullGalleryMetaData, type SavedMeta } from './galleryData.ts';
 import { createGalleryCollection, createGalleryImage } from './galleryEntityFactory.ts';
 
 const defaultGalleryFileName = 'gallery.yaml';
+const defaultMetaDataFileName = 'metadata.yaml';
 
 async function generateGalleryFile(galleryDir: string): Promise<void> {
 	try {
-		let galleryObj = await loadExistingGallery(galleryDir);
-		galleryObj = mergeGalleriesObj(galleryObj, await createGalleryObjFrom(galleryDir));
+		let galleryDescriptions = await loadExistingMetaData(galleryDir);
+		let {gallery: galleryObj, metadata: metadataObj} = await createGalleryObjFrom(galleryDir, galleryDescriptions.meta);
+		await writeMetaDataYaml(galleryDir, metadataObj)
 		await writeGalleryYaml(galleryDir, galleryObj);
 	} catch (error) {
 		console.error('Failed to create gallery file:', error);
@@ -19,56 +21,28 @@ async function generateGalleryFile(galleryDir: string): Promise<void> {
 	}
 }
 
-async function loadExistingGallery(galleryDir: string) {
-	const existingGalleryFile = path.join(galleryDir, defaultGalleryFileName);
-	if (fs.existsSync(existingGalleryFile)) {
-		return await loadGallery(existingGalleryFile);
+async function loadExistingMetaData(galleryDir: string): Promise<GalleryMetaData> {
+	const existingDescriptionsFile = path.join(galleryDir, defaultMetaDataFileName);
+	if (fs.existsSync(existingDescriptionsFile)) {
+		return await loadMetaData(existingDescriptionsFile);
 	}
-	return NullGalleryData;
+	return NullGalleryMetaData;
 }
 
-function mergeGalleriesObj(
-	targetGalleryObj: GalleryData,
-	sourceGalleryObj: GalleryData,
-): GalleryData {
-	return {
-		collections: getUpdatedCollectionList(targetGalleryObj, sourceGalleryObj),
-		images: getUpdatedImageList(targetGalleryObj, sourceGalleryObj),
-	};
-}
-
-function getUpdatedImageList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
-	const imagesMap = new Map(targetGalleryObj.images.map((image) => [image.path, image]));
-	sourceGalleryObj.images.forEach((image) => {
-		const existingImage = imagesMap.get(image.path);
-		if (existingImage === undefined) {
-			imagesMap.set(image.path, image);
-		} else {
-			existingImage.exif = image.exif;
-		}
-	});
-	return Array.from(imagesMap.values());
-}
-
-function getUpdatedCollectionList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
-	const collectionsMap = new Map(
-		targetGalleryObj.collections.map((collection) => [collection.id, collection]),
-	);
-	sourceGalleryObj.collections.forEach((collection) => {
-		if (!collectionsMap.get(collection.id)) {
-			collectionsMap.set(collection.id, collection);
-		}
-	});
-	return Array.from(collectionsMap.values());
-}
-
-async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
+async function createGalleryObjFrom(galleryDir: string, existingMetaData: SavedMeta[])
+	: Promise<{ gallery: GalleryData, metadata: GalleryMetaData }> {
 	const imageFiles = await fg(`${galleryDir}/**/*.{jpg,jpeg,png}`, {
 		dot: false,
 	});
+	const { images, metadata } = await createImagesFrom(imageFiles, galleryDir, existingMetaData)
 	return {
-		collections: createCollectionsFrom(imageFiles, galleryDir),
-		images: await createImagesFrom(imageFiles, galleryDir),
+		gallery: {
+			collections: createCollectionsFrom(imageFiles, galleryDir),
+			images: images
+		},
+		metadata: {
+			meta: metadata
+		}
 	};
 }
 
@@ -84,8 +58,36 @@ function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
 		.filter((col) => col.id !== '.');
 }
 
-async function createImagesFrom(imageFiles: string[], galleryDir: string) {
-	return Promise.all(imageFiles.map((file) => createGalleryImage(galleryDir, file)));
+async function createImagesFrom(imageFiles: string[], galleryDir: string, oldMetaData: SavedMeta[])
+	: Promise<{ images: GalleryImage[], metadata: SavedMeta[] }> {
+	const finalMetaData: SavedMeta[] = []
+	const images = await Promise.all(imageFiles.map((file) => {
+		const matchIndex = oldMetaData.findIndex(d => d.path == file)
+		if (matchIndex >= 0)
+			var savedMetaData = oldMetaData.splice(matchIndex, 1)[0]
+		else {
+			console.warn(`Didn't find metadata for image: "${file}"`)
+			var savedMetaData = {
+				path: file,
+				meta: createNullMeta()
+			}
+		}
+
+		finalMetaData.push(savedMetaData)
+		return createGalleryImage(galleryDir, file, savedMetaData.meta)
+	}))
+	for (const old of oldMetaData)
+		console.warn(`Unused metadata for image "${old.path}"`)
+	return {
+		images: images,
+		metadata: finalMetaData
+	}
+}
+
+async function writeMetaDataYaml(galleryDir: string, metadataObj: GalleryMetaData) {
+	const filePath = path.join(galleryDir, defaultMetaDataFileName);
+	await fs.promises.writeFile(filePath, yaml.dump(metadataObj), 'utf8');
+	console.log('Description file created/updated successfully at:', filePath);
 }
 
 async function writeGalleryYaml(galleryDir: string, galleryObj: GalleryData) {

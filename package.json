@@ -30,8 +30,7 @@
     "justified-layout": "^4.1.0",
     "npm": "^11.4.1",
     "tailwindcss": "^4.1.8",
-    "typescript": "5.8.3",
-    "vitest": "^3.2.3"
+    "typescript": "5.8.3"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
@@ -46,8 +45,7 @@
     "deploy": "wrangler deploy",
     "dev": "astro dev",
     "preview": "astro build && wrangler dev",
-    "generate": "npx tsx src/data/gallery-generator.ts src/gallery",
-    "test": "vitest"
+    "generate": "npx tsx src/data/gallery-generator.ts public/gallery"
   },
   "type": "module"
 }

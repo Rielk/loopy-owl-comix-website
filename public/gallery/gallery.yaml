@@ -1,0 +1,242 @@
+collections:
+  - id: Category1
+    name: Category1
+  - id: Category2
+    name: Category2
+  - id: Category3
+    name: Category3
+  - id: Category4
+    name: Category4
+images:
+  - path: public/gallery/Category1/black_cat_redraw.png
+    meta:
+      title: Black Cat Redraw
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/bunny_angel_blood.png
+    meta:
+      title: Bunny Angel Blood
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/i_want_my_immortality.png
+    meta:
+      title: I Want My Immortality
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/Kezziah_Phillips_Character_Rotation.png
+    meta:
+      title: Kezziah Phillips Character Rotation
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/Kezziah_Phillips_personal_artwork_7.png
+    meta:
+      title: Kezziah Phillips Personal Artwork 7
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/Persona_5_panther_1.png
+    meta:
+      title: Persona 5 Panther 1
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/Polyester_1.png
+    meta:
+      title: Polyester 1
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/Polyurethane_1.png
+    meta:
+      title: Polyurethane 1
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/skullgirls_-_double.png
+    meta:
+      title: Skullgirls Double
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category1/spidersona_balance.png
+    meta:
+      title: Spidersona Balance
+      description: ''
+      collections:
+        - Category1
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category2/strapless_poster_1b.png
+    meta:
+      title: Strapless Poster 1b
+      description: ''
+      collections:
+        - Category2
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category2/strapless_poster_2a.png
+    meta:
+      title: Strapless Poster 2a
+      description: ''
+      collections:
+        - Category2
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category2/strapless_poster_4a.png
+    meta:
+      title: Strapless Poster 4a
+      description: ''
+      collections:
+        - Category2
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category2/strapless_poster_6.png
+    meta:
+      title: Strapless Poster 6
+      description: ''
+      collections:
+        - Category2
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category2/Strapless_screenshot_1.png
+    meta:
+      title: Strapless Screenshot 1
+      description: ''
+      collections:
+        - Category2
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/phylaza_ref.png
+    meta:
+      title: Phylaza Ref
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/strapless_poster_3a.png
+    meta:
+      title: Strapless Poster 3a
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/the_blacklight_1.png
+    meta:
+      title: The Blacklight 1
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/Tygah_fancy_art_for_me.png
+    meta:
+      title: Tygah Fancy Art For Me
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/web_rider_down_boy.png
+    meta:
+      title: Web Rider Down Boy
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/web_rider_highschool.png
+    meta:
+      title: Web Rider Highschool
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category3/web_rider_ref.png
+    meta:
+      title: Web Rider Ref
+      description: ''
+      collections:
+        - Category3
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/misty_fellthorn_equipment_parents.png
+    meta:
+      title: Misty Fellthorn Equipment Parents
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/web_rider_powers.png
+    meta:
+      title: Web Rider Powers
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/web_rider_side_characters.png
+    meta:
+      title: Web Rider Side Characters
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/web_rider_spidersona.png
+    meta:
+      title: Web Rider Spidersona
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/web_rider_spiderverse.png
+    meta:
+      title: Web Rider Spiderverse
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/web_rider_turn_around_meme.png
+    meta:
+      title: Web Rider Turn Around Meme
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan
+  - path: public/gallery/Category4/zoe_breaking_form_hades_game.png
+    meta:
+      title: Zoe Breaking Form Hades Game
+      description: ''
+      collections:
+        - Category4
+    exif:
+      shutterSpeed: .nan

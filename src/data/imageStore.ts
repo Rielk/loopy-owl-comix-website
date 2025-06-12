@@ -19,13 +19,13 @@ export class ImageStoreError extends Error {
 }
 
 /**
- * Import all images from /src directory
+ * Import all images from /public/gallery directory
  */
-const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
+const imageModules = import.meta.glob('/public/gallery/**/*.{jpg,jpeg,png,gif}', {
 	eager: true,
 });
 
-const defaultGalleryPath = 'src/gallery/gallery.yaml';
+const defaultGalleryPath = 'public/gallery/gallery.yaml';
 
 export const featuredCollectionId = 'featured';
 const builtInCollections = [featuredCollectionId];
@@ -76,7 +76,7 @@ function getErrorMsgFrom(error: unknown) {
  * @throws {ImageStoreError} If YAML file cannot be read or parsed
  * @param galleryPath
  */
-const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
+async function loadGalleryData(galleryPath: string): Promise<GalleryData> {
 	try {
 		const gallery = await loadGallery(galleryPath);
 		validateGalleryData(gallery);
@@ -132,7 +132,7 @@ function sortImages(images: GalleryImage[], options: GetImagesOptions) {
  */
 const processImages = (images: GalleryImage[], galleryPath: string): Image[] => {
 	return images.reduce<Image[]>((acc, imageEntry) => {
-		const imagePath = path.posix.join('/', path.parse(galleryPath).dir, imageEntry.path);
+		const imagePath = `/${imageEntry.path}`;
 		try {
 			acc.push(createImageDataFor(imagePath, imageEntry));
 		} catch (error) {

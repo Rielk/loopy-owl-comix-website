@@ -13,6 +13,21 @@ export interface GalleryData {
 }
 
 /**
+ * Structure of the metadata YAML file
+ */
+export interface GalleryMetaData {
+	meta: SavedMeta[]
+}
+
+/**
+ * Represents a record of meta data for an image
+ */
+export interface SavedMeta {
+	path: string;
+	meta: Meta;
+}
+
+/**
  * Represents a collection of images
  * @property {string} name - Name of the collection
  * @property {GalleryImage[]} getImages - Array of images in the collection
@@ -88,13 +103,31 @@ export interface Image {
  */
 export type ImageModule = { default: ImageMetadata };
 
-export const loadGallery = async (galleryPath: string): Promise<GalleryData> => {
+export async function loadMetaData(galleryPath: string): Promise<GalleryMetaData> {
+	const yamlPath = path.resolve(process.cwd(), galleryPath);
+	const content = await fs.readFile(yamlPath, 'utf8');
+	return yaml.load(content) as GalleryMetaData;
+}
+
+export async function loadGallery(galleryPath: string): Promise<GalleryData> {
 	const yamlPath = path.resolve(process.cwd(), galleryPath);
 	const content = await fs.readFile(yamlPath, 'utf8');
 	return yaml.load(content) as GalleryData;
-};
+}
 
 export const NullGalleryData: GalleryData = {
 	collections: [],
 	images: [],
 };
+
+export const NullGalleryMetaData: GalleryMetaData = {
+	meta: [] 
+}
+
+export function createNullMeta() {
+	return {
+		title: '',
+		description: '',
+		collections: <string[]>[]
+	}
+}

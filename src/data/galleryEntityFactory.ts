@@ -1,19 +1,32 @@
 import path from 'path';
-import type { GalleryImage } from './galleryData.ts';
+import type { GalleryImage, Meta } from './galleryData.ts';
 import exifr from 'exifr';
 
-export const createGalleryImage = async (
+export async function createGalleryImage (
 	galleryDir: string,
 	file: string,
-): Promise<GalleryImage> => {
+	meta: Meta
+): Promise<GalleryImage> {
 	const relativePath = path.relative(galleryDir, file);
-	const exifData = await exifr.parse(file);
+	const exifData = await exifr.parse(path.join(galleryDir, relativePath));
+	if (meta.title) 
+		var title = meta.title;
+	 else {
+		var title = toReadableCaption(path.basename(relativePath, path.extname(relativePath)));
+		meta.title = title
+	}
+	if (meta.collections.length > 0)
+		var collections = meta.collections
+	else {
+		var collections = collectionIdForImage(relativePath)
+		meta.collections = collections
+	}
 	const image = {
-		path: relativePath,
+		path: systemPathToURLPath(file),
 		meta: {
-			title: toReadableCaption(path.basename(relativePath, path.extname(relativePath))),
-			description: '',
-			collections: collectionIdForImage(relativePath),
+			title: title,
+			description: meta.description,
+			collections: collections,
 		},
 		exif: {},
 	};
@@ -33,6 +46,10 @@ export const createGalleryImage = async (
 	return image;
 };
 
+function systemPathToURLPath(input: string): string {
+	return input.replace(path.sep, "/")
+}
+
 function toReadableCaption(input: string): string {
 	return input
 		.replace(/[^a-zA-Z0-9]+/g, ' ') // Replace non-alphanumerics with space
@@ -45,7 +62,7 @@ function collectionIdForImage(relativePath: string) {
 	return path.dirname(relativePath) === '.' ? [] : [path.dirname(relativePath)];
 }
 
-export const createGalleryCollection = (dir: string) => {
+export function createGalleryCollection (dir: string) {
 	return {
 		id: dir,
 		name: toReadableCaption(dir),
