@@ -65,13 +65,18 @@ async function createImagesFrom(imageFiles: string[], galleryDir: string, oldMet
 		const matchIndex = oldMetaData.findIndex(d => d.path == file)
 		if (matchIndex >= 0)
 			var savedMetaData = oldMetaData.splice(matchIndex, 1)[0]
-		else {
-			console.warn(`Didn't find metadata for image: "${file}"`)
+		else 
 			var savedMetaData = {
 				path: file,
 				meta: createNullMeta()
 			}
-		}
+
+		if (!savedMetaData.meta.title)
+			console.warn(`Didn't find a title for image: "${file}"`)
+		if (!savedMetaData.meta.description)
+			console.warn(`Didn't find a description for image: "${file}"`)
+		if (savedMetaData.meta.collections.length < 1)
+			console.warn(`Didn't find any collections for image: "${file}"`)
 
 		finalMetaData.push(savedMetaData)
 		return createGalleryImage(galleryDir, file, savedMetaData.meta)
